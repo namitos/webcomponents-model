@@ -1,0 +1,25 @@
+{
+  "name": "webcomponents-model",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namitos/webcomponents-model.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/namitos/webcomponents-model/issues"
+  },
+  "homepage": "https://github.com/namitos/webcomponents-model#readme",
+  "dependencies": {
+    "ace-builds": "github:ajaxorg/ace-builds",
+    "fc": "github:namitos/fc#v2",
+    "frontend-common": "namitos/frontend-common#v1",
+    "webcomponents-collection": "github:namitos/webcomponents-collection#v1"
+  }
+}
