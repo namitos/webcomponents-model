@@ -1,5 +1,6 @@
 import { BaseComponent, html, repeat } from '../BaseComponent.js';
 import { icons } from '../icons.js';
+import ModelDialogsMixin from './ModelDialogsMixin.js';
 
 export class ModelsTree extends BaseComponent {
   static get properties() {
@@ -16,11 +17,14 @@ export class ModelsTree extends BaseComponent {
       <style>
         :host {
           display: flex;
+          border: 1px solid #ddd;
+          background: #fff;
+          height: 700px;
         }
         models-tree-branch {
-          width: 200px;
-          max-height: 500px;
+          width: 250px;
           overflow-y: auto;
+          border-right: 1px solid #ddd;
         }
       </style>
       <models-tree-branch .modelName="${this.modelName}" @branchClick="${(e) => this._branchClick(e.detail, 0)}"></models-tree-branch>
@@ -42,7 +46,7 @@ export class ModelsTree extends BaseComponent {
 }
 window.customElements.define('models-tree', ModelsTree);
 
-export class ModelsTreeBranch extends BaseComponent {
+export class ModelsTreeBranch extends ModelDialogsMixin(BaseComponent) {
   static get properties() {
     return {
       modelName: {
@@ -71,6 +75,7 @@ export class ModelsTreeBranch extends BaseComponent {
           display: flex;
           height: 24px;
           line-height: 24px;
+          padding: 4px 8px;
         }
         .item .name {
           flex: 1;
@@ -113,10 +118,6 @@ export class ModelsTreeBranch extends BaseComponent {
     return this.models[this.modelName];
   }
 
-  _itemName(item) {
-    return item.name || item.shortname || item.shortName || item.short_name || item.fullname || item.fullName || item.full_name || item.title || item.text || item.value || item._id;
-  }
-
   async connectedCallback() {
     super.connectedCallback();
     this._loadItems();
@@ -130,43 +131,6 @@ export class ModelsTreeBranch extends BaseComponent {
             $or: [{ parent: { exists: false } }, { parent: '' }]
           }
     );
-  }
-
-  _editDialog(item = {}) {
-    let form = document.createElement('model-form');
-    form.addEventListener('saved', () => this._loadItems());
-    this.showDialog({
-      title: `Edit ${this.modelName}`,
-      el: Object.assign(form, {
-        modelName: this.modelName,
-        itemId: item._id
-      }),
-      externalStyles: html`
-        <style>
-          .wrapper {
-            width: 90%;
-            left: calc(5%);
-          }
-        </style>
-      `
-    });
-  }
-
-  async _deleteDialog(item) {
-    if (this._model.schema.safeDelete) {
-      if (item.deleted) {
-        item.deleted = false;
-        await item.save();
-      } else {
-        await item.delete();
-      }
-      this._loadItems();
-    } else {
-      if (confirm('Are you sure?')) {
-        await item.delete();
-        this._loadItems();
-      }
-    }
   }
 }
 window.customElements.define('models-tree-branch', ModelsTreeBranch);

@@ -16,10 +16,7 @@ export class ModelForm extends BaseComponent {
         value: ''
       },
       item: {
-        type: Object,
-        value: () => {
-          return {};
-        }
+        type: Object
       }
     };
   }
@@ -58,8 +55,10 @@ export class ModelForm extends BaseComponent {
 
   async connectedCallback() {
     super.connectedCallback();
-    let [item] = this.itemId ? await this._model.read({ _id: this.itemId }) : [new this._model()];
-    this.item = item;
+    if (!this.item) {
+      let [item] = this.itemId ? await this._model.read({ _id: this.itemId }) : [new this._model()];
+      this.item = item;
+    }
   }
 }
 window.customElements.define('model-form', ModelForm);

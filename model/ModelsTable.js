@@ -1,8 +1,9 @@
 import { BaseComponent, html } from '../BaseComponent.js';
 import { icons } from '../icons.js';
 import '../../webcomponents-collection/ui/UiPager.js';
+import ModelDialogsMixin from './ModelDialogsMixin.js';
 
-export class ModelsTable extends BaseComponent {
+export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
   static get properties() {
     return {
       modelName: {
@@ -149,43 +150,6 @@ export class ModelsTable extends BaseComponent {
       items,
       pagesCount: Math.ceil(count / this.limit)
     });
-  }
-
-  _editDialog(item = {}) {
-    let form = document.createElement('model-form');
-    form.addEventListener('saved', () => this._loadItems());
-    this.showDialog({
-      title: `Edit ${this.modelName}`,
-      el: Object.assign(form, {
-        modelName: this.modelName,
-        itemId: item._id
-      }),
-      externalStyles: html`
-        <style>
-          .wrapper {
-            width: 90%;
-            left: calc(5%);
-          }
-        </style>
-      `
-    });
-  }
-
-  async _deleteDialog(item) {
-    if (this._model.schema.safeDelete) {
-      if (item.deleted) {
-        item.deleted = false;
-        await item.save();
-      } else {
-        await item.delete();
-      }
-      this._loadItems();
-    } else {
-      if (confirm('Are you sure?')) {
-        await item.delete();
-        this._loadItems();
-      }
-    }
   }
 }
 window.customElements.define('models-table', ModelsTable);
