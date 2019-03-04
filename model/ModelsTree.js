@@ -91,7 +91,7 @@ export class ModelsTreeBranch extends BaseComponent {
         (item) => html`
           <div class="item">
             <a class="name" @click="${() => this.emit('branchClick', item)}">${this._itemName(item)}</a>
-            <div class="buttons"><a>${icons.edit}</a><a>${icons.close}</a></div>
+            <div class="buttons"><a @click="${() => this._editDialog(item)}">${icons.edit}</a><a @click="${() => this._deleteDialog(item)}">${icons.close}</a></div>
           </div>
         `
       )}
@@ -108,6 +108,10 @@ export class ModelsTreeBranch extends BaseComponent {
 
   async connectedCallback() {
     super.connectedCallback();
+    this._loadItems();
+  }
+
+  async _loadItems() {
     this.items = await this._model.read(
       this.branchId
         ? { parent: this.branchId }
