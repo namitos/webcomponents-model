@@ -69,6 +69,8 @@ export class ModelsTreeBranch extends BaseComponent {
       <style>
         .item {
           display: flex;
+          height: 24px;
+          line-height: 24px;
         }
         .item .name {
           flex: 1;
@@ -76,8 +78,13 @@ export class ModelsTreeBranch extends BaseComponent {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          cursor: pointer;
         }
         .item .buttons {
+          display: none;
+        }
+        .item:hover .buttons {
+          display: block;
         }
         .item .buttons svg {
           width: 16px;
@@ -87,10 +94,13 @@ export class ModelsTreeBranch extends BaseComponent {
           text-decoration: none;
         }
       </style>
+      <div class="item">
+        <div class="name" @click="${() => this._editDialog()}">New item</div>
+      </div>
       ${this.items.map(
         (item) => html`
           <div class="item">
-            <a class="name" @click="${() => this.emit('branchClick', item)}">${this._itemName(item)}</a>
+            <div class="name" @click="${() => this.emit('branchClick', item)}">${this._itemName(item)}</div>
             <div class="buttons"><a @click="${() => this._editDialog(item)}">${icons.edit}</a><a @click="${() => this._deleteDialog(item)}">${icons.close}</a></div>
           </div>
         `
