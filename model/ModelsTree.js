@@ -96,7 +96,7 @@ export class ModelsTreeBranch extends BaseComponent {
         }
       </style>
       <div class="item">
-        <div class="name" @click="${() => this._editDialog()}">${icons.plus} New item</div>
+        <div class="name" @click="${() => this._editDialog(new this._model({ parent: this.branchId }))}">${icons.plus} New item</div>
       </div>
       ${this.items.map(
         (item) => html`
