@@ -94,7 +94,16 @@ export class ModelsTable extends BaseComponent {
                 : html`
                     <td>${this._itemName(item)}</td>
                   `}
-              <td class="buttons"><a @click="${() => this._editDialog(item)}">${icons.edit}</a></td>
+              <td class="buttons">
+                <a @click="${() => this._editDialog(item)}">${icons.edit}</a>
+                ${this._model.schema.safeDelete
+                  ? html`
+                      <a @click="${() => this._deleteDialog(item)}">${item.deleted ? icons.restore : icons.trash}</a>
+                    `
+                  : html`
+                      <a @click="${() => this._deleteDialog(item)}">${icons.close}</a>
+                    `}
+              </td>
             </tr>
           `
         )}
@@ -160,6 +169,23 @@ export class ModelsTable extends BaseComponent {
         </style>
       `
     });
+  }
+
+  async _deleteDialog(item) {
+    if (this._model.schema.safeDelete) {
+      if (item.deleted) {
+        item.deleted = false;
+        await item.save();
+      } else {
+        await item.delete();
+      }
+      this._loadItems();
+    } else {
+      if (confirm('Are you sure?')) {
+        await item.delete();
+        this._loadItems();
+      }
+    }
   }
 }
 window.customElements.define('models-table', ModelsTable);

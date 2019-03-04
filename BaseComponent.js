@@ -145,6 +145,9 @@ class BaseComponent extends _BaseComponent {
         table.standard [numeric] {
           text-align: right;
         }
+        table.standard .buttons a {
+          text-decoration: none;
+        }
         table.standard .buttons svg {
           width: 24px;
           height: 24px;
