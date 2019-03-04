@@ -86,16 +86,17 @@ export class ModelsTreeBranch extends BaseComponent {
         .item:hover .buttons {
           display: block;
         }
-        .item .buttons svg {
+        svg {
           width: 16px;
           height: 16px;
+          vertical-align: sub;
         }
         a {
           text-decoration: none;
         }
       </style>
       <div class="item">
-        <div class="name" @click="${() => this._editDialog()}">New item</div>
+        <div class="name" @click="${() => this._editDialog()}">${icons.plus} New item</div>
       </div>
       ${this.items.map(
         (item) => html`
