@@ -1,5 +1,4 @@
 import { BaseComponent, html } from '../BaseComponent.js';
-import { icons } from '../icons.js';
 import { fc } from '../../fc/fc.js';
 import '../../webcomponents-collection/input/InputCode.js';
 import '../../webcomponents-collection/input/InputFile.js';

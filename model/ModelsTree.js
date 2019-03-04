@@ -19,7 +19,6 @@ export class ModelsTree extends BaseComponent {
           display: flex;
           border: 1px solid #ddd;
           background: #fff;
-          height: 700px;
         }
         models-tree-branch {
           width: 250px;

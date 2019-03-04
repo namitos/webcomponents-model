@@ -31,6 +31,18 @@ export class AppShell extends BaseComponent {
           flex: 1;
           padding: 16px;
           overflow: auto;
+          display: flex;
+          flex-direction: column;
+        }
+        #content {
+          box-sizing: border-box;
+          display: flex;
+          align-items: stretch;
+          justify-content: center;
+        }
+
+        #content > * {
+          width: 100%;
         }
         #sidebar {
           background: #444;
