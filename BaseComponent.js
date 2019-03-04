@@ -1,6 +1,7 @@
 import { BaseComponent as _BaseComponent, html } from '../webcomponents-collection/BaseComponent.js';
 import '../webcomponents-collection/ui/UiToast.js';
 import '../webcomponents-collection/ui/UiDialog.js';
+import { repeat } from '../lit-html/directives/repeat.js';
 
 class BaseComponent extends _BaseComponent {
   get user() {
@@ -255,4 +256,4 @@ class BaseComponent extends _BaseComponent {
   }
 }
 
-export { BaseComponent, html };
+export { BaseComponent, html, repeat };
