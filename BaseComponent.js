@@ -91,6 +91,7 @@ class BaseComponent extends _BaseComponent {
         a {
           color: #004ba0;
           text-decoration: underline;
+          cursor: pointer;
         }
 
         .card {

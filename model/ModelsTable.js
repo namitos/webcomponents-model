@@ -1,5 +1,6 @@
 import { BaseComponent, html } from '../BaseComponent.js';
 import { icons } from '../icons.js';
+import '../../webcomponents-collection/ui/UiPager.js';
 
 export class ModelsTable extends BaseComponent {
   static get properties() {
@@ -11,6 +12,22 @@ export class ModelsTable extends BaseComponent {
       items: {
         type: Array,
         value: () => []
+      },
+      limit: {
+        type: Number,
+        value: 20
+      },
+      skip: {
+        type: Number,
+        value: 0
+      },
+      page: {
+        type: Number,
+        value: 0
+      },
+      pagesCount: {
+        type: Number,
+        value: 0
       }
     };
   }
@@ -48,6 +65,8 @@ export class ModelsTable extends BaseComponent {
         ${this._model.schema.table && this._model.schema.table.filters ? this._model.schema.table.filters.map(this._getFilterInput.bind(this)) : ''}
       </div>
 
+      <ui-pager .page="${this.page}" .pagesCount="${this.pagesCount}" @page-changed="${(e) => this._pageChanged(e.detail)}"></ui-pager>
+
       <table class="standard">
         <tr>
           ${this._model.schema.table && this._model.schema.table.header
@@ -81,6 +100,8 @@ export class ModelsTable extends BaseComponent {
         )}
       </table>
 
+      <ui-pager .page="${this.page}" .pagesCount="${this.pagesCount}" @page-changed="${(e) => this._pageChanged(e.detail)}"></ui-pager>
+
       <a class="standard" @click="${() => this._editDialog()}">Create new</a>
     `;
   }
@@ -99,8 +120,26 @@ export class ModelsTable extends BaseComponent {
     this._loadItems();
   }
 
+  _pageChanged(page) {
+    this.page = page;
+    this._loadItems();
+  }
+
   async _loadItems() {
-    this.items = await this._model.read();
+    let where = {};
+    let options = {
+      skip: this.page * this.limit,
+      limit: this.limit
+    };
+    let [items, count] = await Promise.all([
+      //
+      this._model.read(where, options),
+      this._model.count(where)
+    ]);
+    Object.assign(this, {
+      items,
+      pagesCount: Math.ceil(count / this.limit)
+    });
   }
 
   _editDialog(item = {}) {
