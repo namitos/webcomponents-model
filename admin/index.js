@@ -49,9 +49,11 @@ async function init() {
       },
       '/admin/models': async () => {},
       '/admin/models/:modelName': async (params) => {
+        let Model = window.models[params.modelName];
+        let { tree } = Model.schema;
         window.appShell.setContent({
           title: params.modelName,
-          el: Object.assign(document.createElement('models-table'), params)
+          el: Object.assign(document.createElement(tree ? 'models-tree' : 'models-table'), params)
         });
       }
     });
