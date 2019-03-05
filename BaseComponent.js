@@ -13,7 +13,7 @@ class BaseComponent extends _BaseComponent {
   }
 
   changeInput(e) {
-    let { name, value, checked } = e.target;
+    let { name, value, valueAsNumber, checked, type } = e.target;
     if (e instanceof KeyboardEvent) {
       let target = e.path[0];
       name = target.name;
@@ -23,6 +23,9 @@ class BaseComponent extends _BaseComponent {
     if (typeof checked === 'boolean' && value === 'on') {
       //value from checkbox
       value = checked;
+    }
+    if (['datetime-local', 'number'].includes(type)) {
+      value = valueAsNumber;
     }
     if (name) {
       this.set(name, value);
