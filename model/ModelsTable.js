@@ -1,4 +1,4 @@
-import { BaseComponent, html } from '../BaseComponent.js';
+import { BaseComponent, html, repeat } from '../BaseComponent.js';
 import { icons } from '../icons.js';
 import '../../webcomponents-collection/ui/UiPager.js';
 import ModelDialogsMixin from './ModelDialogsMixin.js';
@@ -29,21 +29,31 @@ export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
       pagesCount: {
         type: Number,
         value: 0
+      },
+      filterForm: {
+        type: Object,
+        value: () => {
+          return {};
+        }
       }
     };
   }
 
   _getFilterInput(fieldName) {
     let fieldSchema = this._model.schema.getField(fieldName);
-    console.log(fieldSchema);
     if (fieldSchema.type === 'string') {
       return html`
         <div>
           <label>${fieldSchema.label}</label>
-          <input type="text" @keydown="${(e) => console.log(e.target.value)}" />
+          <input type="text" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
         </div>
       `;
     }
+  }
+
+  _changeFilterInput(e) {
+    this.changeInput(e);
+    this._loadItems();
   }
 
   template() {
@@ -63,7 +73,7 @@ export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
         }
       </style>
       <div class="filter-form">
-        ${this._model.schema.table && this._model.schema.table.filters ? this._model.schema.table.filters.map(this._getFilterInput.bind(this)) : ''}
+        ${this._model.schema.table && this._model.schema.table.filters ? repeat(this._model.schema.table.filters, (fieldName) => fieldName, this._getFilterInput.bind(this)) : ''}
       </div>
 
       <ui-pager .page="${this.page}" .pagesCount="${this.pagesCount}" @page-changed="${(e) => this._pageChanged(e.detail)}"></ui-pager>
@@ -137,6 +147,16 @@ export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
 
   async _loadItems() {
     let where = {};
+    Object.keys(this.filterForm).forEach((fieldName) => {
+      let fieldSchema = this._model.schema.getField(fieldName);
+      if (fieldSchema.type === 'string') {
+        where[fieldName] = {
+          $regex: this.filterForm[fieldName],
+          $options: 'i'
+        };
+      }
+    });
+
     let options = {
       skip: this.page * this.limit,
       limit: this.limit
