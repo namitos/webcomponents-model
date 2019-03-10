@@ -192,6 +192,9 @@ class BaseComponent extends _BaseComponent {
           font-weight: 500;
           margin: 0 0 4px 0;
           display: block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         input:not([type='checkbox']):not([type='radio']):not([big]),
         textarea,
