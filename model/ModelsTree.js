@@ -8,6 +8,10 @@ export class ModelsTree extends BaseComponent {
       breadcrumb: {
         type: Array,
         value: () => []
+      },
+      modelName: {
+        type: String,
+        value: ''
       }
     };
   }
@@ -64,9 +68,6 @@ export class ModelsTreeBranch extends ModelDialogsMixin(BaseComponent) {
   }
 
   template() {
-    if (!this.modelName) {
-      return '';
-    }
     return html`
       ${this.sharedStyles}
       <style>
