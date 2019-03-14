@@ -159,8 +159,6 @@ export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
       }
     });
 
-    console.log(where);
-
     let options = {
       skip: this.page * this.limit,
       limit: this.limit
