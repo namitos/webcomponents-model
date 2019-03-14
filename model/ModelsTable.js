@@ -148,14 +148,18 @@ export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
   async _loadItems() {
     let where = {};
     Object.keys(this.filterForm).forEach((fieldName) => {
-      let fieldSchema = this._model.schema.getField(fieldName);
-      if (fieldSchema.type === 'string') {
-        where[fieldName] = {
-          $regex: this.filterForm[fieldName],
-          $options: 'i'
-        };
+      if (this.filterForm[fieldName]) {
+        let fieldSchema = this._model.schema.getField(fieldName);
+        if (fieldSchema.type === 'string') {
+          where[fieldName] = {
+            $regex: this.filterForm[fieldName],
+            $options: 'i'
+          };
+        }
       }
     });
+
+    console.log(where);
 
     let options = {
       skip: this.page * this.limit,
