@@ -2,6 +2,7 @@ import { BaseComponent, html } from '../BaseComponent.js';
 import { fc } from '../../fc/fc.js';
 import '../../webcomponents-collection/input/InputCode.js';
 import '../../webcomponents-collection/input/InputFile.js';
+import '../model/ModelInputTree.js';
 
 export class ModelForm extends BaseComponent {
   static get properties() {

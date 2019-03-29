@@ -216,10 +216,7 @@ class BaseComponent extends _BaseComponent {
           height: 32px;
           line-height: 32px;
         }
-        input.pager {
-          width: 100px !important;
-          margin: 0 0 16px 0 !important;
-        }
+
         fc-object {
           display: block;
           padding: 8px;
@@ -232,7 +229,7 @@ class BaseComponent extends _BaseComponent {
           font-weight: 600;
           margin: 0 0 8px 0;
         }
-        fc-primitive {
+        fc-object .fc-object-item {
           display: block;
           margin: 0 0 8px 0;
         }
