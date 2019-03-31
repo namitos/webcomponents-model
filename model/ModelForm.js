@@ -11,10 +11,6 @@ export class ModelForm extends BaseComponent {
         type: String,
         value: ''
       },
-      itemId: {
-        type: String,
-        value: ''
-      },
       item: {
         type: Object
       }
@@ -56,8 +52,7 @@ export class ModelForm extends BaseComponent {
   async connectedCallback() {
     super.connectedCallback();
     if (!this.item) {
-      let [item] = this.itemId ? await this._model.read({ _id: this.itemId }) : [new this._model()];
-      this.item = item;
+      this.item = new this._model();
     }
   }
 }

@@ -6,14 +6,13 @@ export default (base) =>
       return item.title || item.name || item.shortname || item.shortName || item.short_name || item.fullname || item.fullName || item.full_name || item.text || item.value || item._id;
     }
 
-    _editDialog(item = {}) {
+    _editDialog(item) {
       let form = document.createElement('model-form');
       form.addEventListener('saved', () => this._loadItems());
       this.showDialog({
         title: `Edit ${this.modelName}`,
         el: Object.assign(form, {
           modelName: this.modelName,
-          itemId: item._id,
           item
         }),
         externalStyles: html`
