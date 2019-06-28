@@ -2,6 +2,7 @@ import { BaseComponent, html, repeat } from '../BaseComponent.js';
 import { icons } from '../icons.js';
 import '../../webcomponents-collection/ui/UiPager.js';
 import ModelDialogsMixin from './ModelDialogsMixin.js';
+import './ModelForm.js';
 
 export class ModelsTable extends ModelDialogsMixin(BaseComponent) {
   static get properties() {
