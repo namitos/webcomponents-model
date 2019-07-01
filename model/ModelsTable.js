@@ -168,6 +168,9 @@ export function ModelsTableMixin(base) {
         skip: this.page * this.limit,
         limit: this.limit
       };
+      if (this.sort) {
+        options.sort = this.sort;
+      }
       let [items, count] = await Promise.all([
         //
         this._model.read(where, options),
