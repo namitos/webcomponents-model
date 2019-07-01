@@ -24,7 +24,7 @@ class BaseComponent extends _BaseComponent {
       //value from checkbox
       value = checked;
     }
-    if (['datetime-local', 'number'].includes(type)) {
+    if (['datetime-local', 'date', 'number'].includes(type)) {
       value = valueAsNumber;
     }
     if (name) {
