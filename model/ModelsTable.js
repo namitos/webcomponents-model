@@ -43,13 +43,31 @@ export function ModelsTableMixin(base) {
 
     _getFilterInput(fieldName) {
       let fieldSchema = this._model.schema.getField(fieldName);
-      if (fieldSchema.type === 'string') {
-        return html`
-          <div>
-            <label>${fieldSchema.label}</label>
-            <input type="text" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
-          </div>
-        `;
+      if (fieldSchema) {
+        if (fieldSchema.type === 'string') {
+          return html`
+            <div>
+              <label>${fieldSchema.label}</label>
+              <input type="text" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
+            </div>
+          `;
+        } else if (['number', 'integer'].includes(fieldSchema.type)) {
+          return html`
+            <div>
+              <label>${fieldSchema.label}</label>
+              <input type="number" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
+            </div>
+          `;
+        } else if (fieldSchema.type === 'boolean') {
+          return html`
+            <div>
+              <label>${fieldSchema.label}</label>
+              <input type="ckeckbox" name="filterForm.${fieldName}" @change="${(e) => this._changeFilterInput(e)}" />
+            </div>
+          `;
+        }
+      } else {
+        console.warn(`no fieldSchema for ${fieldName}`);
       }
     }
 
@@ -153,12 +171,14 @@ export function ModelsTableMixin(base) {
         let value = this.filterForm[fieldName];
         if (value) {
           let fieldSchema = this._model.schema.getField(fieldName);
-          if (fieldSchema.type === 'string') {
+          if ((fieldSchema && fieldSchema.type === 'string') || typeof value === 'string') {
             where[fieldName] = {
               $regex: value,
               $options: 'i'
             };
-          } else if (fieldSchema.type === 'boolean') {
+          } else if ((fieldSchema && ['number', 'integer'].includes(fieldSchema.type)) || typeof value === 'number') {
+            where[fieldName] = value;
+          } else if ((fieldSchema && fieldSchema.type === 'boolean') || typeof value === 'boolean') {
             where[fieldName] = value;
           }
         }
@@ -176,6 +196,7 @@ export function ModelsTableMixin(base) {
         this._model.read(where, options),
         this._model.count(where)
       ]);
+      console.log(where, items);
       Object.assign(this, {
         items,
         pagesCount: Math.ceil(count / this.limit)
