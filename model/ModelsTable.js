@@ -196,7 +196,6 @@ export function ModelsTableMixin(base) {
         this._model.read(where, options),
         this._model.count(where)
       ]);
-      console.log(where, items);
       Object.assign(this, {
         items,
         pagesCount: Math.ceil(count / this.limit)
