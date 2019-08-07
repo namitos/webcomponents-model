@@ -171,6 +171,7 @@ export function ModelsTableMixin(base) {
       let where = {};
       Object.keys(this.filterForm).forEach((fieldName) => {
         let value = this.filterForm[fieldName];
+
         if (value) {
           let fieldSchema = this._model.schema.getField(fieldName);
           if ((fieldSchema && fieldSchema.type === 'string') || typeof value === 'string') {
@@ -178,9 +179,11 @@ export function ModelsTableMixin(base) {
               $regex: value,
               $options: 'i'
             };
-          } else if ((fieldSchema && ['number', 'integer'].includes(fieldSchema.type)) || typeof value === 'number') {
+          } else if (!isNaN(value) && ((fieldSchema && ['number', 'integer'].includes(fieldSchema.type)) || typeof value === 'number')) {
             where[fieldName] = value;
           } else if ((fieldSchema && fieldSchema.type === 'boolean') || typeof value === 'boolean') {
+            where[fieldName] = value;
+          } else if (typeof value === 'object') {
             where[fieldName] = value;
           }
         }
