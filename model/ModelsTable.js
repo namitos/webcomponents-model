@@ -166,6 +166,8 @@ export function ModelsTableMixin(base) {
     }
 
     async _loadItems() {
+      await new Promise((resolve) => setTimeout(() => resolve()));
+
       let where = {};
       Object.keys(this.filterForm).forEach((fieldName) => {
         let value = this.filterForm[fieldName];
