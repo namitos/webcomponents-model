@@ -70,7 +70,6 @@ class BaseComponent extends _BaseComponent {
         h3,
         h4,
         h5 {
-          font-family: 'Roboto Slab', serif;
           color: #000;
           margin-top: 0;
         }
