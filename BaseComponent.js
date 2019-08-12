@@ -14,7 +14,7 @@ class BaseComponent extends _BaseComponent {
 
   changeInput(e) {
     let { name, value, valueAsNumber, checked, type } = e.target;
-    if (e instanceof KeyboardEvent) {
+    if (e instanceof KeyboardEvent && e.path) {
       let target = e.path[0];
       name = target.name;
       value = target.value;
