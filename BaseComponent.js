@@ -18,6 +18,7 @@ class BaseComponent extends _BaseComponent {
       let target = e.path[0];
       name = target.name;
       value = target.value;
+      valueAsNumber = target.valueAsNumber;
       checked = target.checked;
     }
     if (typeof checked === 'boolean' && value === 'on') {
