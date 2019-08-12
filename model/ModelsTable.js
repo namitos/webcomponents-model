@@ -48,14 +48,14 @@ export function ModelsTableMixin(base) {
           return html`
             <div>
               <label>${fieldSchema.label}</label>
-              <input type="text" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
+              <input type="text" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" @change="${(e) => this._changeFilterInput(e)}" />
             </div>
           `;
         } else if (['number', 'integer'].includes(fieldSchema.type)) {
           return html`
             <div>
               <label>${fieldSchema.label}</label>
-              <input type="number" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" />
+              <input type="number" name="filterForm.${fieldName}" @keyup="${(e) => this._changeFilterInput(e)}" @change="${(e) => this._changeFilterInput(e)}" />
             </div>
           `;
         } else if (fieldSchema.type === 'boolean') {
@@ -173,14 +173,15 @@ export function ModelsTableMixin(base) {
         let value = this.filterForm[fieldName];
 
         if (value) {
-          if (typeof value === 'string') {
+          let fieldSchema = this._model.schema.getField(fieldName);
+          if ((fieldSchema && fieldSchema.type === 'string') || typeof value === 'string') {
             where[fieldName] = {
               $regex: value,
               $options: 'i'
             };
-          } else if (!isNaN(value) && typeof value === 'number') {
+          } else if (!isNaN(value) && ((fieldSchema && ['number', 'integer'].includes(fieldSchema.type)) || typeof value === 'number')) {
             where[fieldName] = value;
-          } else if (typeof value === 'boolean') {
+          } else if ((fieldSchema && fieldSchema.type === 'boolean') || typeof value === 'boolean') {
             where[fieldName] = value;
           } else if (typeof value === 'object') {
             where[fieldName] = value;
