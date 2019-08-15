@@ -39,6 +39,10 @@ class BaseComponent extends _BaseComponent {
     let toast = document.createElement('ui-toast');
     toast.innerHTML = text;
     let wrapperEl = document.body;
+    let toasts = wrapperEl.querySelectorAll('ui-toast');
+    [...toasts].forEach((el) => {
+      el.style.display = 'none';
+    });
     wrapperEl.appendChild(toast);
     toast.show({ duration });
     setTimeout(() => {
