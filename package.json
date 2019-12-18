@@ -19,6 +19,6 @@
   "dependencies": {
     "fc": "github:namitos/fc#v2",
     "frontend-common": "namitos/frontend-common#v1",
-    "webcomponents-collection": "github:namitos/webcomponents-collection#v1"
+    "webcomponents-collection": "github:namitos/webcomponents-collection#v2"
   }
 }

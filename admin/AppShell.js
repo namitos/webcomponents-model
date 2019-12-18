@@ -82,7 +82,8 @@ export class AppShell extends BaseComponent {
     this.modelNames = Object.keys(window.models).filter((modelName) => !['Model', 'Tree', 'Schema'].includes(modelName) && this.user.permission(`${modelName} read`));
   }
 
-  setContent(data = {}) {
+  async setContent(data = {}) {
+    await this.nextTick();
     this.title = data.title;
     let content = this._content.querySelector('#content');
     content.innerHTML = '';
