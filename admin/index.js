@@ -5,30 +5,19 @@ import { initModels } from '../../frontend-common/initModels.js';
 
 import './AppShell.js';
 import '../model/ModelsTable.js';
+import '../model/ModelsTree.js';
 import '../model/ModelForm.js';
 import '../user/UserLogin.js';
 
 let am = new (ArrayMixin(class {}))();
 Object.assign(Array.prototype, { keyBy: am.keyBy, groupBy: am.groupBy });
 
-window.apiHost = `${location.protocol}//${location.host}`;
 
-window.err = function(err) {
-  //util.notify(err && err.stack ? err.stack : err, 1000000);
-  console.error(err, err.stack ? err.stack : '');
-};
+export async function start({apiHost }){
+window.apiHost =apiHost || `${location.protocol}//${location.host}`;
 window.api = new HttpTransport(`${window.apiHost}/api`);
 
-/**
- * @returns {Object} init data
- */
-async function init() {
-  let initDataEl = document.getElementById('prerenderdata-init');
-  return initDataEl ? JSON.parse(initDataEl.innerHTML) : window.api.r('init');
-}
-
-(async () => {
-  let initData = await init();
+  let initData = await window.api.r('init');
   let models = initModels({
     schemas: initData.schemas,
     apiHost: window.apiHost
@@ -60,4 +49,4 @@ async function init() {
   } else {
     document.body.appendChild(document.createElement('user-login'));
   }
-})();
+}
