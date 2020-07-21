@@ -128,7 +128,7 @@ export class ModelsTreeBranch extends ModelDialogsMixin(BaseComponent) {
       this.branchId
         ? { parent: this.branchId }
         : {
-            $or: [{ parent: { exists: false } }, { parent: '' }]
+            $or: [{ parent: { $exists: false } }, { parent: '' }]
           }
     );
   }
